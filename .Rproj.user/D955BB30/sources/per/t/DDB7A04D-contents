@@ -8,9 +8,9 @@ theme_alex = function(){
     plot.caption = element_text(face = "italic", size = 10, color = "white"),
     plot.title = element_text(face = "bold", size = 14, color = "white"),
     plot.subtitle = element_text(face = "italic", size = 11, color = "white"),
-    plot.background = element_rect(fill = "grey12", color = NA),
+    plot.background = element_rect(fill = "#262626", color = NA),
     #panel/grid elements
-    panel.grid.major = element_blank(), 
+    panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     #axis elements
     axis.text.x = element_text(color = "white", size = 9),
@@ -40,12 +40,12 @@ custcolors = c(
 #helper function for palette function
 #extracts given colors as hex codes
 colors_alex = function(...){
-  
+
   cols = c(...)
-  
+
   if(is.null(cols))
     return(custcolors)
-  
+
   custcolors[cols]
 }
 #Palette list -> allows additional palettes to be added modularly
