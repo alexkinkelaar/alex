@@ -1,5 +1,4 @@
 ##Custom ggplot theme
-require(ggplot2)
 theme_alex = function(){
   theme_void() %+replace%
     #modifying void theme
@@ -50,8 +49,15 @@ colors_alex = function(...){
 }
 #Palette list -> allows additional palettes to be added modularly
 #Changes to individual palettes are made in this list - additional palettes can be added, modified, or removed here
+# main  - full palette, used for continuous gradients
+# dark  - discrete colors readable on the dark theme_alex() background (#262626)
+#         (purple and dark blue are ~1.1-1.2:1 contrast on #262626, so they are left out)
+# light - discrete colors readable on a white/light background
+#         (light blue and light gray are ~1.5-1.7:1 contrast on white, so they are left out)
 palettes_alex = list(
-  `main` = colors_alex("light blue", "salmon", "green", "purple", "light gray", "dark blue")
+  `main` = colors_alex("light blue", "salmon", "green", "purple", "light gray", "dark blue"),
+  `dark` = colors_alex("light blue", "salmon", "light gray", "green"),
+  `light` = colors_alex("salmon", "green", "purple", "dark blue")
 )
 #Function to interpolate custom color palette
 # palette - the palette to return
@@ -59,24 +65,54 @@ palettes_alex = list(
 # ... - additional arguments
 palette_alex = function(palette = "main", reverse = FALSE, ...){
   pal = palettes_alex[[palette]]
+  if(is.null(pal)) stop("Unknown palette '", palette, "'. Options: ", paste(names(palettes_alex), collapse = ", "))
   if(reverse) pal = rev(pal)
   colorRampPalette(pal,...)
 }
-#Function for COLOR argument in ggplot
-scale_color_alex = function(palette = "main", discrete = TRUE, reverse = FALSE,...){
-  pal = palette_alex(palette = palette, reverse = reverse)
-  if(discrete){
-    discrete_scale("coluor", paste0("alex_", palette), palette = pal, ...)
+#Discrete palette -> returns the palette's colors in order (no interpolation)
+#Only interpolates if more levels are requested than the palette has colors
+discrete_palette_alex = function(palette = "dark", reverse = FALSE){
+  pal = palettes_alex[[palette]]
+  if(is.null(pal)) stop("Unknown palette '", palette, "'. Options: ", paste(names(palettes_alex), collapse = ", "))
+  if(reverse) pal = rev(pal)
+  pal = unname(pal)
+  function(n){
+    if(n > length(pal)){
+      warning("Palette '", palette, "' has ", length(pal), " colors but ", n, " are needed; interpolating.")
+      return(colorRampPalette(pal)(n))
+    }
+    pal[seq_len(n)]
+  }
+}
+#Builds a discrete scale across ggplot2 versions (scale_name was deprecated in ggplot2 3.5.0)
+discrete_scale_alex = function(aesthetic, palette, reverse, ...){
+  pal = discrete_palette_alex(palette = palette, reverse = reverse)
+  if(utils::packageVersion("ggplot2") >= "3.5.0"){
+    discrete_scale(aesthetic, palette = pal, ...)
   } else {
+    discrete_scale(aesthetic, paste0("alex_", palette), palette = pal, ...)
+  }
+}
+#Function for COLOR argument in ggplot
+#palette defaults to "dark" for discrete scales (matches theme_alex) and "main" for continuous scales
+scale_color_alex = function(palette = NULL, discrete = TRUE, reverse = FALSE,...){
+  if(is.null(palette)) palette = if(discrete) "dark" else "main"
+  if(discrete){
+    discrete_scale_alex("colour", palette = palette, reverse = reverse, ...)
+  } else {
+    pal = palette_alex(palette = palette, reverse = reverse)
     scale_color_gradientn(colors = pal(256), ...)
   }
 }
+scale_colour_alex = scale_color_alex
 #Function for FILL argument in ggplot
-scale_fill_alex = function(palette = "main", discrete = TRUE, reverse = FALSE, ...){
-  pal = palette_alex(palette = palette, reverse = reverse)
+#palette defaults to "dark" for discrete scales (matches theme_alex) and "main" for continuous scales
+scale_fill_alex = function(palette = NULL, discrete = TRUE, reverse = FALSE, ...){
+  if(is.null(palette)) palette = if(discrete) "dark" else "main"
   if(discrete){
-    discrete_scale("fill", pase0("alex_", palette), palette = pal, ...)
+    discrete_scale_alex("fill", palette = palette, reverse = reverse, ...)
   } else {
+    pal = palette_alex(palette = palette, reverse = reverse)
     scale_fill_gradientn(colors = pal(256), ...)
   }
 }
