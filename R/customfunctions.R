@@ -71,7 +71,7 @@ palette_alex = function(palette = "main", reverse = FALSE, ...){
 }
 #Discrete palette -> returns the palette's colors in order (no interpolation)
 #Only interpolates if more levels are requested than the palette has colors
-discrete_palette_alex = function(palette = "dark", reverse = FALSE){
+.discrete_palette_alex = function(palette = "dark", reverse = FALSE){
   pal = palettes_alex[[palette]]
   if(is.null(pal)) stop("Unknown palette '", palette, "'. Options: ", paste(names(palettes_alex), collapse = ", "))
   if(reverse) pal = rev(pal)
@@ -85,8 +85,8 @@ discrete_palette_alex = function(palette = "dark", reverse = FALSE){
   }
 }
 #Builds a discrete scale across ggplot2 versions (scale_name was deprecated in ggplot2 3.5.0)
-discrete_scale_alex = function(aesthetic, palette, reverse, ...){
-  pal = discrete_palette_alex(palette = palette, reverse = reverse)
+.discrete_scale_alex = function(aesthetic, palette, reverse, ...){
+  pal = .discrete_palette_alex(palette = palette, reverse = reverse)
   if(utils::packageVersion("ggplot2") >= "3.5.0"){
     discrete_scale(aesthetic, palette = pal, ...)
   } else {
@@ -98,7 +98,7 @@ discrete_scale_alex = function(aesthetic, palette, reverse, ...){
 scale_color_alex = function(palette = NULL, discrete = TRUE, reverse = FALSE,...){
   if(is.null(palette)) palette = if(discrete) "dark" else "main"
   if(discrete){
-    discrete_scale_alex("colour", palette = palette, reverse = reverse, ...)
+    .discrete_scale_alex("colour", palette = palette, reverse = reverse, ...)
   } else {
     pal = palette_alex(palette = palette, reverse = reverse)
     scale_color_gradientn(colors = pal(256), ...)
@@ -110,7 +110,7 @@ scale_colour_alex = scale_color_alex
 scale_fill_alex = function(palette = NULL, discrete = TRUE, reverse = FALSE, ...){
   if(is.null(palette)) palette = if(discrete) "dark" else "main"
   if(discrete){
-    discrete_scale_alex("fill", palette = palette, reverse = reverse, ...)
+    .discrete_scale_alex("fill", palette = palette, reverse = reverse, ...)
   } else {
     pal = palette_alex(palette = palette, reverse = reverse)
     scale_fill_gradientn(colors = pal(256), ...)
