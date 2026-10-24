@@ -1,5 +1,6 @@
 \name{scale_color_alex}
 \alias{scale_color_alex}
+\alias{scale_colour_alex}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Color scale constructor
@@ -8,12 +9,13 @@ Color scale constructor
 Color scale constructor for custom color palette.
 }
 \usage{
-scale_color_alex(palette = "main", discrete = TRUE, reverse = FALSE, ...)
+scale_colour_alex(palette = NULL, discrete = TRUE, reverse = FALSE, ...)
+scale_color_alex(palette = NULL, discrete = TRUE, reverse = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{palette}{
-    Character name of custom color palette
+    Character name of custom color palette: "dark", "light", or "main". Defaults to "dark" for discrete scales (readable on the theme_alex() background) and "main" for continuous scales. Use "light" on white backgrounds.
   }
   \item{discrete}{
     Boolean input as to whether color palette should be discrete or not
@@ -22,7 +24,7 @@ scale_color_alex(palette = "main", discrete = TRUE, reverse = FALSE, ...)
     Boolean input to reverse the ordering of the returned color palette
   }
   \item{...}{
-    Additional arguments to pass to palette_alex()
+    Additional arguments passed to the underlying ggplot2 scale
   }
 }
 \details{
@@ -51,15 +53,14 @@ scale_color_alex(palette = "main", discrete = TRUE, reverse = FALSE, ...)
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-mtcars \%>\% ggplot(aes(x = hp, y = mpg, color = as.factor(cyl))) +
-   geom_line(size = 1.5, alpha = 0.5) +
-   scale_color_alex() +
-   theme_alex() +
-   xlab("Horsepower") +
-   ylab("Miles per Gallon") +
-   labs(
-       title = "Miles per Gallon vs Horsepower"
-   )
+library(ggplot2)
+ggplot(mtcars, aes(x = hp, y = mpg, color = as.factor(cyl))) +
+  geom_point(size = 3) +
+  scale_color_alex() +
+  theme_alex() +
+  xlab("Horsepower") +
+  ylab("Miles per Gallon") +
+  labs(title = "Miles per Gallon vs Horsepower")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

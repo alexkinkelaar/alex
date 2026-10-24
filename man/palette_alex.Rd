@@ -5,15 +5,15 @@
 Interpolate custom color palette
 }
 \description{
-Function will return a color palette.
+Returns a function that interpolates n colors from the chosen palette (used for continuous scales).
 }
 \usage{
-palette_alex(palette, reverse)
+palette_alex(palette = "main", reverse = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{palette}{
-The palette to use
+The palette to use: "main", "dark", or "light"
 }
   \item{reverse}{
   Boolean input to reverse the palette color order

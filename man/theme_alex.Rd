@@ -13,7 +13,6 @@ theme_alex()
 %- maybe also 'usage' for other objects documented here.
 \arguments{
 }
-}
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
@@ -40,18 +39,15 @@ theme_alex()
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 \examples{
-mtcars \%>\% ggplot(aes(x = hp, y = mpg, color = as.factor(cyl))) +
-  geom_line(size = 1.5, alpha = 0.5) +
+library(ggplot2)
+ggplot(mtcars, aes(x = hp, y = mpg, color = as.factor(cyl))) +
+  geom_point(size = 3) +
   scale_color_alex() +
   theme_alex() +
   xlab("Horsepower") +
   ylab("Miles per Gallon") +
-  labs(
-    title = "Miles per Gallon vs Horsepower"
-  )
-
-Will format the plot with a customized theme.
-
+  labs(title = "Miles per Gallon vs Horsepower")
+}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{ ~kwd1 }

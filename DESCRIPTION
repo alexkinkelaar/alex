@@ -1,11 +1,15 @@
 Package: alex
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 1.0.0
-Author: alex
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Custom 'ggplot2' Theme and Color Palettes
+Version: 1.1.0
+Author: Alex Kinkelaar
+Maintainer: Alex Kinkelaar <alex.kinkelaar@gmail.com>
+Description: A dark 'ggplot2' theme and matching color palettes, with
+    discrete palettes chosen for contrast on dark and light backgrounds.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+    ggplot2,
+    grDevices,
+    utils
