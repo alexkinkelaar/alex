@@ -6,7 +6,7 @@ Author: Alex Kinkelaar
 Maintainer: Alex Kinkelaar <alex.kinkelaar@gmail.com>
 Description: A dark 'ggplot2' theme and matching color palettes, with
     discrete palettes chosen for contrast on dark and light backgrounds.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
